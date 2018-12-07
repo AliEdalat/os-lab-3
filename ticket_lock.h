@@ -1,7 +1,7 @@
 struct ticket_lock
 {
-	uint ticket;
-	uint turn;
+	int ticket;
+	int turn;
 	int pid;
 	struct spinlock lk;
 	// For debugging:
