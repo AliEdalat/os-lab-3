@@ -25,7 +25,7 @@ void ticket_acquire(struct ticket_lock* lk) {
 	//cprintf("before panic\n");
 	if (ticket_holding(lk))
 		panic("acquire");
-	me = read_and_increment(&lk->ticket, 1);
+	me = read_and_increment(&lk->ticket);
 	//cprintf("after inc %d %d\n", me, lk->ticket);
 	while(lk->turn != me){
 		sleep(lk, &lk->lk);

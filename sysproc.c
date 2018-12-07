@@ -113,6 +113,7 @@ sys_ticketlocktest(void)
 {
   ticket_acquire(&ticketlock);
   safe_count++;
+  cprintf("ali: %d\n", safe_count);
   ticket_release(&ticketlock);
 }
 
