@@ -23,7 +23,7 @@ void ticket_acquire(struct ticket_lock* lk) {
 	uint me = fetch_and_add(&lk->ticket, 1);
 	cprintf("after inc %d %d\n", me, lk->ticket);
 	while(lk->turn != me){
-		sleep(lk, &lk->lk);
+		sleep_without_spin(lk);
 	}
 	lk->pid = myproc()->pid;
 }

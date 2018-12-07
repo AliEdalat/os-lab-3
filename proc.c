@@ -418,6 +418,35 @@ forkret(void)
   // Return to "caller", actually trapret (see allocproc).
 }
 
+void
+sleep_without_spin(void *chan)
+{
+  struct proc *p = myproc();
+  
+  if(p == 0)
+    panic("sleep");
+
+
+  // Must acquire ptable.lock in order to
+  // change p->state and then call sched.
+  // Once we hold ptable.lock, we can be
+  // guaranteed that we won't miss any wakeup
+  // (wakeup runs with ptable.lock locked),
+  
+  acquire(&ptable.lock);  //DOC: sleeplock1
+  // Go to sleep.
+  p->chan = chan;
+  p->state = SLEEPING;
+
+  sched();
+
+  // Tidy up.
+  p->chan = 0;
+
+  // Reacquire original lock.
+  release(&ptable.lock);
+}
+
 // Atomically release lock and sleep on chan.
 // Reacquires lock when awakened.
 void
