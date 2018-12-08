@@ -21,7 +21,7 @@ void init_ticket_lock(struct ticket_lock* lk, char* name) {
 
 void ticket_acquire(struct ticket_lock* lk) {
 	uint me = fetch_and_add(&lk->ticket, 1);
-	cprintf("after inc %d %d\n", me, lk->ticket);
+	//cprintf("after inc %d %d\n", me, lk->ticket);
 	while(lk->turn != me){
 		sleep_without_spin(lk);
 	}
