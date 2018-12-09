@@ -12,7 +12,6 @@
 #include "ticket_lock.h"
 
 void init_ticket_lock(struct ticket_lock* lk, char* name) {
-	initlock(&lk->lk, "ticket lock");
 	lk->name = name;
 	lk->pid = 0;
 	lk->ticket = 0;
