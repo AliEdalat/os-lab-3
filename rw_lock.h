@@ -1,4 +1,6 @@
+// #include "semaphore.h"
+
 struct rw_lock{
-    int readers;
-    int retry_threshold;
-};
+    struct semaphore mutex, wrt;
+    int readcount;
+};  

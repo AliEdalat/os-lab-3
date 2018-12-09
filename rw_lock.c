@@ -9,79 +9,39 @@
 #include "mmu.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "semaphore.h"
 #include "rw_lock.h"
 
-#define HAS_WRITER 0xffffffff
-
-void init_rw_lock(struct rw_lock* lk, int readers, int retry_threshold)
+void init_rw_lock(struct rw_lock* lk)
 {
-    lk->readers = readers;
-    lk->retry_threshold = retry_threshold;
+    sem_init(&lk->mutex,1);
+    sem_init(&lk->wrt,1);
+    lk ->readcount = 0;
 }
 
 void acquire_writer(struct rw_lock* lk)
 {
-    int retry = 0;
-    while (1)
-    {
-        int prev_readers = lk->readers;
-        if (prev_readers == 0)
-        {
-            if (cas(&lk->readers, prev_readers, HAS_WRITER))
-            {
-                // we've won the race
-                return;
-            }
-        }
+    sem_wait(&lk->wrt);
+}
 
-        retry++;
-        if (retry > lk->retry_threshold)
-        {
-            // save some cpu cycles
-            retry = 0;
-            // sleep proc this_thread::yield();
-        }
-    }
+void release_writer(struct rw_lock* lk){
+    sem_signal(&lk->wrt);
 }
 
 void acquire_reader(struct rw_lock* lk)
 {
-    int retry = 0;
-    while (1)
-    {
-        int prev_readers = lk->readers;
-        if (prev_readers != HAS_WRITER)
-        {
-            int new_readers = prev_readers + 1;
-            if (cas(&lk->readers, prev_readers, new_readers))
-            {
-                // we've won the race
-                return;
-            }
-        }
-
-        retry++;
-        if (retry > lk->retry_threshold)
-        {
-            retry = 0;
-            // sleep proc this_thread::yield();
-        }
-    }
+    sem_wait(&lk->mutex);
+    lk->readcount++;
+    if (lk->readcount == 1)
+        sem_wait(&lk->wrt);
+    sem_signal(&lk->mutex);
 }
 
-// void release_writer(struct rw_lock* lk)
-// {
-    
-// }
-
-// void release_reader(struct rw_lock* lk)
-// {
-
-//             int new_readers = prev_readers + 1;
-//             if (cas(&lk->readers, prev_readers, new_readers))
-//             {
-//                 // we've won the race
-//                 return;
-//             }
-
-// }
+void release_reader(struct rw_lock* lk)
+{
+    sem_wait(&lk->mutex);
+    lk->readcount--;
+    if(lk->readcount == 0)
+        sem_signal(&lk->wrt);
+    sem_signal(&lk->mutex);
+}

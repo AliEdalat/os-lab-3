@@ -8,6 +8,7 @@ struct rtcdate;
 struct spinlock;
 struct sleeplock;
 struct ticket_lock;
+struct semaphore;
 struct stat;
 struct superblock;
 struct node;
@@ -150,6 +151,11 @@ void		init_ticket_lock(struct ticket_lock* lk, char* name);
 void		ticket_acquire(struct ticket_lock* lk);
 void		ticket_release(struct ticket_lock* lk);
 int			ticket_holding(struct ticket_lock* lk);
+
+// semaphore.c
+void        sem_init(struct semaphore * s, uint i);
+void        sem_wait(struct semaphore * s);
+void        sem_signal(struct semaphore * s);
 
 // string.c
 int             memcmp(const void*, const void*, uint);

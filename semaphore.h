@@ -1,10 +1,10 @@
 #include "param.h"
-#include "spinlock.h"
+// #include "spinlock.h"
 
-typedef struct semaphore {
+struct semaphore {
   unsigned int val;
   struct spinlock lock;
   void * thread[NPROC];
   unsigned int next;
   unsigned int end;
-} semaphore;
+};

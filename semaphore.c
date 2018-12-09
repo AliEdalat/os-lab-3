@@ -6,6 +6,7 @@
 #include "mmu.h"
 #include "x86.h"
 #include "proc.h"
+#include "spinlock.h"
 #include "semaphore.h"
 
 void sem_init(struct semaphore * s, uint i) {
