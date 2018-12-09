@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "x86.h": "c",
-        "defs.h": "c"
+        "defs.h": "c",
+        "date.h": "c",
+        "wr_lock.h": "c"
     }
 }

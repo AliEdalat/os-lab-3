@@ -11,12 +11,15 @@
 #include "ticket_lock.h"
 #include "semaphore.h"
 #include "rw_lock.h"
+#include "wr_lock.h"
 
 extern struct node* first_proc;
 struct ticket_lock ticketlock;
 struct rw_lock rwLock;
+struct wr_lock wrLock;
 int safe_count = 0;
 int read_write_race = 0;
+int race = 0;
 
 int
 sys_fork(void)
@@ -159,35 +162,35 @@ sys_rwtest(uint pattern)
 void
 sys_wrinit(void)
 {
-	//init_wr_lock(&rwLock);
+	init_wr_lock(&wrLock);
 }
 
 void
 sys_wrtest(uint pattern)
 {
-  // int bits[32];
-  // int i =0;
-  // int j;
-  // int readData = 0;
-  // while (pattern > 0){
-  //   bits[i] =  pattern % 2;
-  //   pattern = pattern /2;
-  //   i++;
-  // }
-  // i -= 2;
-  // for (j = i; j >= 0; j--){
-  //   if (bits[j] == 0){
-  //     acquire_reader(&rwLock);
-  //     readData = read_write_race;
-  //     cprintf(">>>>> %d\n", readData);
-  //     release_reader(&rwLock);
-  //   }else{  
-  //     acquire_writer(&rwLock);
-  //     read_write_race++;
-  //     cprintf("<<<<<< %d\n", read_write_race);
-  //     release_writer(&rwLock);
-  //   }
-  // }
+  int bits[32];
+  int i =0;
+  int j;
+  int readData = 0;
+  while (pattern > 0){
+    bits[i] =  pattern % 2;
+    pattern = pattern /2;
+    i++;
+  }
+  i -= 2;
+  for (j = i; j >= 0; j--){
+    if (bits[j] == 0){
+      acquire_reader_b(&wrLock);
+      readData = read_write_race;
+      cprintf(">>>>> %d\n", readData);
+      release_reader_b(&wrLock);
+    }else{  
+      acquire_writer_b(&wrLock);
+      read_write_race++;
+      cprintf("<<<<<< %d\n", read_write_race);
+      release_writer_b(&wrLock);
+    }
+  }
 }
 
 int

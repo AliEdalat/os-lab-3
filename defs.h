@@ -13,6 +13,7 @@ struct stat;
 struct superblock;
 struct node;
 struct rw_lock;
+struct wr_lock;
 
 // bio.c
 void            binit(void);
@@ -164,6 +165,13 @@ void        acquire_writer(struct rw_lock* lk);
 void        release_writer(struct rw_lock* lk);
 void        acquire_reader(struct rw_lock* lk);
 void        release_reader(struct rw_lock* lk);
+
+// wr_lock.c
+void        init_wr_lock(struct wr_lock* lk);
+void        acquire_writer_b(struct wr_lock* lk);
+void        release_writer_b(struct wr_lock* lk);
+void        acquire_reader_b(struct wr_lock* lk);
+void        release_reader_b(struct wr_lock* lk);
 
 // string.c
 int             memcmp(const void*, const void*, uint);
