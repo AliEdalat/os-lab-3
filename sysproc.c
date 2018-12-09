@@ -156,6 +156,40 @@ sys_rwtest(uint pattern)
   }
 }
 
+void
+sys_wrinit(void)
+{
+	//init_wr_lock(&rwLock);
+}
+
+void
+sys_wrtest(uint pattern)
+{
+  // int bits[32];
+  // int i =0;
+  // int j;
+  // int readData = 0;
+  // while (pattern > 0){
+  //   bits[i] =  pattern % 2;
+  //   pattern = pattern /2;
+  //   i++;
+  // }
+  // i -= 2;
+  // for (j = i; j >= 0; j--){
+  //   if (bits[j] == 0){
+  //     acquire_reader(&rwLock);
+  //     readData = read_write_race;
+  //     cprintf(">>>>> %d\n", readData);
+  //     release_reader(&rwLock);
+  //   }else{  
+  //     acquire_writer(&rwLock);
+  //     read_write_race++;
+  //     cprintf("<<<<<< %d\n", read_write_race);
+  //     release_writer(&rwLock);
+  //   }
+  // }
+}
+
 int
 sys_getpid(void)
 {

@@ -7,6 +7,8 @@ void ticketlockinit(void);
 void ticketlocktest(void);
 void rwinit(void);
 void rwtest(uint);
+void wrinit(void);
+void wrtest(uint);
 int inc_num(int num);
 void invoked_syscalls(int pid);
 void sort_syscalls(int pid);
