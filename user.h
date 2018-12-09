@@ -5,6 +5,8 @@ struct rtcdate;
 int fork(void);
 void ticketlockinit(void);
 void ticketlocktest(void);
+void rwinit(void);
+void rwtest(uint);
 int inc_num(int num);
 void invoked_syscalls(int pid);
 void sort_syscalls(int pid);
