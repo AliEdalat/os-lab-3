@@ -90,7 +90,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-  for (i = 0; i < 29; ++i)
+  for (i = 0; i < 31; ++i)
   {
     p->syscalls[i].count = 0;
   }
@@ -518,7 +518,7 @@ invocation_log(int pid)
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
     if(p->pid == pid){
-      for (i = 0; i < 29; ++i)
+      for (i = 0; i < 31; ++i)
       {
         if (p->syscalls[i].count > 0)
         {
