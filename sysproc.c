@@ -9,10 +9,14 @@
 #include "syscall.h"
 #include "spinlock.h"
 #include "ticket_lock.h"
+#include "semaphore.h"
+#include "rw_lock.h"
 
 extern struct node* first_proc;
 struct ticket_lock ticketlock;
+struct rw_lock rwLock;
 int safe_count = 0;
+int read_write_race = 0;
 
 int
 sys_fork(void)
@@ -121,13 +125,35 @@ sys_ticketlocktest(void)
 void
 sys_rwinit(void)
 {
-	//init_rw_lock()
+	init_rw_lock(&rwLock);
 }
 
 void
-sys_rwtest(int pattern)
+sys_rwtest(uint pattern)
 {
-
+  int bits[32];
+  int i =0;
+  int j;
+  int readData = 0;
+  while (pattern > 0){
+    bits[i] =  pattern % 2;
+    pattern = pattern /2;
+    i++;
+  }
+  i -= 2;
+  for (j = i; j >= 0; j--){
+    if (bits[j] == 0){
+      acquire_reader(&rwLock);
+      readData = read_write_race;
+      cprintf(">>>>> %d\n", readData);
+      release_reader(&rwLock);
+    }else{  
+      acquire_writer(&rwLock);
+      read_write_race++;
+      cprintf("<<<<<< %d\n", read_write_race);
+      release_writer(&rwLock);
+    }
+  }
 }
 
 int

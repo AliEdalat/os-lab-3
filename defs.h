@@ -12,6 +12,7 @@ struct semaphore;
 struct stat;
 struct superblock;
 struct node;
+struct rw_lock;
 
 // bio.c
 void            binit(void);
@@ -156,6 +157,13 @@ int			ticket_holding(struct ticket_lock* lk);
 void        sem_init(struct semaphore * s, uint i);
 void        sem_wait(struct semaphore * s);
 void        sem_signal(struct semaphore * s);
+
+// rw_lock.c
+void        init_rw_lock(struct rw_lock* lk);
+void        acquire_writer(struct rw_lock* lk);
+void        release_writer(struct rw_lock* lk);
+void        acquire_reader(struct rw_lock* lk);
+void        release_reader(struct rw_lock* lk);
 
 // string.c
 int             memcmp(const void*, const void*, uint);
