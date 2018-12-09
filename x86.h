@@ -151,6 +151,18 @@ static inline int fetch_and_add(int* variable, int value)
       return value;
   }
 
+  static inline int
+cas(volatile int* ptr, int old, int _new)
+{
+    unsigned long prev;
+    asm volatile("lock;"
+                 "cmpxchgl %1, %2;"
+                 : "=a"(prev)
+                 : "q"(_new), "m"(*ptr), "a"(old)
+                 : "memory");
+    return prev;
+}
+
 static inline uint
 rcr2(void)
 {
