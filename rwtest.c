@@ -10,7 +10,7 @@ main(int argc, char* argv[])
     int pid = 1;
     int j = 0;
     int i;
-    int patterns [10] = {18};
+    int patterns [10] = {18,248,135,248,18,135,135,18,248,135};
     rwinit();
     for(i = 0; i< 10; i++)
 	if(pid>0)

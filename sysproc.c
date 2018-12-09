@@ -125,7 +125,7 @@ sys_rwinit(void)
 }
 
 void
-sys_rwtest(void)
+sys_rwtest(int pattern)
 {
 
 }
