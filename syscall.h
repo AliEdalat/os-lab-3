@@ -28,3 +28,5 @@
 #define SYS_halt 27
 #define SYS_ticketlockinit 28
 #define SYS_ticketlocktest 29
+#define SYS_rwinit 30
+#define SYS_rwtest 31

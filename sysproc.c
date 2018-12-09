@@ -118,6 +118,18 @@ sys_ticketlocktest(void)
   cprintf("ali: %d\n", safe_count);
 }
 
+void
+sys_rwinit(void)
+{
+	//init_rw_lock()
+}
+
+void
+sys_rwtest(void)
+{
+
+}
+
 int
 sys_getpid(void)
 {
